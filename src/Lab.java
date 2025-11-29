@@ -5,7 +5,7 @@ public class Lab {
 
     // basic constructor
     public Lab(ArrayList<Session> sessions){
-
+        this.sessions = new ArrayList<>(sessions);
     }
 
     
