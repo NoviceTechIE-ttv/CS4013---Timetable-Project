@@ -27,34 +27,34 @@ public class Session {
 
     // boring getters
     public int getDay(){
-
+        return day;
     }
 
     public int getStartTime(){
-
+        return startTime;
     }
 
     public int getEndTime(){
-
+        return endTime;
     }
 
     public String getModuleCode(){
-
+        return moduleCode;
     }
 
     public String getType(){
-
+        return type;
     }
 
     public int getGroup(){
-
+        return group;
     }
 
     public Room getRoom(){
-
+        return room;
     }
 
     public Lecturer getLecturer(){
-
+        return lecturer;
     }
 }
