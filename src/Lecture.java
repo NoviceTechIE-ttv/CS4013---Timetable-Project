@@ -5,7 +5,7 @@ public class Lecture {
 
     // basic constructor
     public Lecture(ArrayList<Session> sessions){
-
+        this.sessions = new ArrayList<>(sessions);
     }
 
     // represents all lecture sessions for all students in the module
@@ -15,6 +15,6 @@ public class Lecture {
     // boring getters
 
     public ArrayList<Session> getSessions(){
-
+        return sessions
     }
 }
