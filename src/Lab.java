@@ -8,6 +8,7 @@ public class Lab {
 
     }
 
+    
     // represents all lab sessions for all students in the module
     // will only ever make the lab if the sessions are already figured out
     // no need for setters as nothing will ever change
