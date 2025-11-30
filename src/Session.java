@@ -10,17 +10,34 @@ public class Session {
 
     // need one constructor with a group
     public Session(int day, int startTime, int endTime, String moduleCode, String type, int group, Room room, Lecturer lecturer){
-
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.moduleCode = moduleCode;
+        this.type = type;
+        this.group = group;
+        this.room = room;
+        this.lecturer = lecturer;
     }
     // and one without where it is set to null
     public Session(int day, int startTime, int endTime, String moduleCode, String type, Room room, Lecturer lecturer){
-
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.moduleCode = moduleCode;
+        this.type = type;
+        this.room = room;
+        this.lecturer = lecturer;
     }
 
     // checks if this session overlaps with a given duration
     // returns true if there is an overlap
     public boolean checkOverlap(int day, int startTime, int endTime){
+        if (this.day != day) {
+            return false;
+        }
 
+        return this.startTime < endTime && startTime < this.endTime;
     }
 
     // no setters or adders as the session will not change
