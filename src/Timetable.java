@@ -56,25 +56,49 @@ public class Timetable {
     }
 
     // METHODS FOR SEARCHING BY IDS
-
     public Module getModuleByID(String moduleID){
-
+        for(Module m: bookOfModules){
+            if(m.getModuleID().equals(moduleID)){
+                return m;
+            }
+        }
+        return null;
     }
 
     public Programme getProgrammeByID(String programmeID){
-
+        for(Programme p: programmes){
+            if(p.getProgrammeID().equals(programmeID)){
+                return p;
+            }
+        }
+        return null;
     }
 
     public Student getStudentByID(String studentID){
-
+        for(Student s: studentBody){
+            if(s.getStudentID().equals(studentID)){
+                return s;
+            }
+        }
+        return null;
     }
 
     public Lecturer getLecturerByID(String lecturerID){
-
+        for(Lecturer l: lecturerBody){
+            if(l.getLecturerID().equals(lecturerID)){
+                return l;
+            }
+        }
+        return null;
     }
 
     public Room getRoomByID(String roomID){
-
+        for(Room r: facilities){
+            if(r.getRoomID().equals(roomID)){
+                return r;
+            }
+        }
+        return null;
     }
 
     // METHODS FOR SESSION GENERATION
@@ -128,28 +152,165 @@ public class Timetable {
     // we still use an ArrayList of Sessions instead of a Session for consistency
 
     // generates a timetable for a student
-    public ArrayList<Session>[][] getStudentTimetable(String studentID){
-
+    public Session[][][] getStudentTimetable(String studentID){
+        Session[][][] studentTimetable = new Session[5][9][1];
+        int[][] nextFreeIndex = new int[5][9];
+        Student stu = getStudentByID(studentID);
+        for(Lecture l: stu.getLectures()){
+            for(Session s: l.getSessions()){
+                // fill every slot that that session is during
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    // then increase the index
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+        }
+        // and labs and tutorials work almost exactly the same as lectures
+        // except that a module can have multiple of them
+        for(Lab l: stu.getLabs()){
+            for(Session s: l.getSessions()){
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+        }
+        for(Tutorial t: stu.getTutorials()){
+            for(Session s: t.getSessions()){
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+        }
+        return studentTimetable;
     }
 
     // generates a timetable for a lecturer
-    public ArrayList<Session>[][] getLecturerTimetable(String lecturerID){
-
+    public Session[][][] getLecturerTimetable(String lecturerID){
+        Session[][][] lecturerTimetable = new Session[5][9][1];
+        int[][] nextFreeIndex = new int[5][9];
+        for(Session s: getLecturerByID(lecturerID).getSessions()){
+            for(int i=s.getStartTime();i<s.getEndTime();i++){
+                lecturerTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                // then increase the index
+                nextFreeIndex[s.getDay()][i]++;
+            }
+        }
+        return lecturerTimetable;
     }
 
     // generates a timetable for a module
-    public ArrayList<Session>[][] getModuleTimetable(String moduleID){
-
+    public Session[][][] getModuleTimetable(String moduleID){
+        Session[][][] moduleTimetable = new Session[5][9][facilities.size()];
+        int[][] nextFreeIndex = new int[5][9];
+        Module m = getModuleByID(moduleID);
+        // get every session in the lecture
+        for(Session s: m.getLecture().getSessions()){
+            // fill every slot that that session is during
+            for(int i=s.getStartTime();i<s.getEndTime();i++){
+                moduleTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                // then increase the index
+                nextFreeIndex[s.getDay()][i]++;
+            }
+        }
+        // and labs and tutorials work almost exactly the same as lectures
+        // except that a module can have multiple of them
+        for(Lab l: m.getLabs()){
+            for(Session s: l.getSessions()){
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    moduleTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+        }
+        for(Tutorial t: m.getTutorials()){
+            for(Session s: t.getSessions()){
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    moduleTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+        }
+        return moduleTimetable;
     }
 
     // generates the timetable for a given year and semester of a programme
-    public ArrayList<Session>[][] getGroupTimetable(String programmeID, int year, int semester){
-
+    public Session[][][] getGroupTimetable(String programmeID, int year, int semester){
+        Session[][][] groupTimetable = new Session[5][9][facilities.size()];
+        // by default filled with 0s
+        int[][] nextFreeIndex = new int[5][9];
+        for(String modCode: getProgrammeByID(programmeID).getModulesForSemester(year, semester)){
+            Module m = getModuleByID(modCode);
+            // get every session in the lecture
+            for(Session s: m.getLecture().getSessions()){
+                // fill every slot that that session is during
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    groupTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    // then increase the index
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+            // and labs and tutorials work almost exactly the same as lectures
+            // except that a module can have multiple of them
+            for(Lab l: m.getLabs()){
+                for(Session s: l.getSessions()){
+                    for(int i=s.getStartTime();i<s.getEndTime();i++){
+                        groupTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                        nextFreeIndex[s.getDay()][i]++;
+                    }
+                }
+            }
+            for(Tutorial t: m.getTutorials()){
+                for(Session s: t.getSessions()){
+                    for(int i=s.getStartTime();i<s.getEndTime();i++){
+                        groupTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                        nextFreeIndex[s.getDay()][i]++;
+                    }
+                }
+            }
+        }
+        return groupTimetable;
     }
 
     // generates the timetable for every session being offered
-    public ArrayList<Session>[][] getMasterTimetable(){
-
+    public Session[][][] getMasterTimetable(){
+        // by default filled with nulls
+        Session[][][] masterTimetable = new Session[5][9][facilities.size()];
+        // by default filled with 0s
+        int[][] nextFreeIndex = new int[5][9];
+        // go through every session that is a child of a module in bookOfModules
+        for(Module m: bookOfModules){
+            // get every session in the lecture
+            for(Session s: m.getLecture().getSessions()){
+                // fill every slot that that session is during
+                for(int i=s.getStartTime();i<s.getEndTime();i++){
+                    masterTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                    // then increase the index
+                    nextFreeIndex[s.getDay()][i]++;
+                }
+            }
+            // and labs and tutorials work almost exactly the same as lectures
+            // except that a module can have multiple of them
+            for(Lab l: m.getLabs()){
+                for(Session s: l.getSessions()){
+                    for(int i=s.getStartTime();i<s.getEndTime();i++){
+                        masterTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                        nextFreeIndex[s.getDay()][i]++;
+                    }
+                }
+            }
+            for(Tutorial t: m.getTutorials()){
+                for(Session s: t.getSessions()){
+                    for(int i=s.getStartTime();i<s.getEndTime();i++){
+                        masterTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
+                        nextFreeIndex[s.getDay()][i]++;
+                    }
+                }
+            }
+        }
+        return masterTimetable;
     }
 
     // takes in a timetable and turns it into a string
