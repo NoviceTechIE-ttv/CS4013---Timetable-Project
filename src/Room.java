@@ -8,17 +8,16 @@ public class Room {
     private int capacity;
     // then what we modify as we generate sessions
     private ArrayList<Session> sessions;
-    private boolean[][] timeSlots; // whether the room is in use(T) or empty(F) M-F(0-4) 9a-6p(0-9)
+    private boolean[][] timeSlots; // whether the room is in use(T) or empty(F) M-F(0-4) 9a-6p(0-10)
 
     // constructor - called when rooms.csv is read in Tutorial
     // also sets all timeSlots to empty(F)
     public Room(String roomID, String type, int capacity){
-        this.roomID = roomID;
-        this.type = type;
-        this.capacity = capacity;
-        this.sessions = new ArrayList<>();
-        this.timeSlots = new boolean[capacity][capacity];
-
+    this.roomID = roomID;
+    this.type = type;
+    this.capacity = capacity;
+    this.sessions = new ArrayList<>();
+    this.timeSlots = new boolean[5][10]; 
     }
 
     // utility functions
@@ -30,15 +29,15 @@ public class Room {
     // then pick one at random
     public int[] getAvailableTime(int duration){
         ArrayList<int[]> availableSlots = new ArrayList<>();
-
+        
         for (int day = 0; day < 5; day++) {
-
+            
             for (int hour = 0; hour <= 10 - duration; hour++) {
                 boolean free = true;
-
+                
                 for (int h = hour; h < hour + duration; h++) {
                     if (timeSlots[day][h]) {
-
+                        
                         free = false;
                         break;
                     }
@@ -48,7 +47,7 @@ public class Room {
                 }
             }
         }
-
+        
         if (availableSlots.isEmpty()) return null;
         int[] slot = availableSlots.get((int)(Math.random() * availableSlots.size()));
         return slot;
@@ -76,15 +75,17 @@ public class Room {
         return sessions.toArray(new Session[0]);
     }
 
+    public void removeSession(Session session){
+    sessions.remove(session);
+    }
+
+
     // and just in case we need to reset
     // empties sessions and resets timeSlots
     public void resetRoom(){
-        this.roomID = "";
-        this.type = "";
-        this.capacity = 0;
-        this.sessions = new ArrayList<>();
+        this.sessions.clear();
         this.timeSlots = new boolean[5][10];
-
     }
+
 
 }
