@@ -12,6 +12,11 @@ public class Room {
     // constructor - called when rooms.csv is read in Tutorial
     // also sets all timeSlots to empty(F)
     public Room(String roomID, String type, int capacity){
+        this.roomID = roomID;
+        this.type = type;
+        this.capacity = capacity;
+        this.sessions = new ArrayList<>();
+        this.timeSlots = new boolean[capacity][capacity];
 
     }
 
@@ -29,24 +34,29 @@ public class Room {
     // Boring getters
 
     public String getRoomID(){
-
+        return this.roomID;
     }
 
     public String getType(){
-
+        return this.type;
     }
 
     public int getCapacity(){
-
+        return this.capacity;
     }
 
     public Session[] getSessions(){
-
+            return  (Session[]) sessions.toArray();
     }
 
     // and just in case we need to reset
     // empties sessions and resets timeSlots
     public void resetRoom(){
+        this.roomID = "";
+        this.type = "";
+        this.capacity = 0;
+        this.sessions = new ArrayList<>();
+        this.timeSlots = new boolean[capacity][capacity];
 
     }
 
