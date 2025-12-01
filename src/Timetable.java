@@ -42,7 +42,7 @@ public class Timetable {
         // then we generate the master timetable
         Session[][][] masterTimetable = getMasterTimetable();
         // and read it out to a csv
-        writeMasterTimetableCSV("src/csv/timetable.csv", masterTimetable);
+        writeMasterTimetableCSV("./src/timetable.csv", masterTimetable);
         // then allow for querying
     }
 
@@ -62,7 +62,7 @@ public class Timetable {
         moduleHoursMap = new HashMap<>();
 
         // base folder for CSVs
-        String basePath = "./src/csv/";
+        String basePath = "./src/";
 
         // 1. read rooms
         readRoomsCSV(basePath+"rooms.csv");
