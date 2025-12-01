@@ -7,9 +7,7 @@ public class Student {
     private int year;
     private int semester;
     // the Lab, Lecture, and Tutorial objects that the student is in
-    private ArrayList<Lab> labs;
-    private ArrayList<Lecture> lectures;
-    private ArrayList<Tutorial> tutorials;
+    private ArrayList<Session> sessions;
 
     // Constructor for Student that takes in everything read in from CSV
     // and initializes its ArrayLists
@@ -18,23 +16,13 @@ public class Student {
         this.programmeID = programmeID;
         this.year = year;
         this.semester = semester;
-        this.labs = new ArrayList<>();
-        this.lectures = new ArrayList<>();
-        this.tutorials = new ArrayList<>();
+        this.sessions = new ArrayList<>();
     }
 
     // boring adders
 
-    public void addLecture(Lecture lecture){
-        lectures.add(lecture);
-    }
-
-    public void addLab(Lab lab){
-        labs.add(lab);
-    }
-
-    public void addTutorial(Tutorial tutorial){
-        tutorials.add(tutorial);
+    public void addSession(Session session){
+        sessions.add(session);
     }
 
     // boring getters
@@ -43,24 +31,14 @@ public class Student {
         return studentID;
     }
 
-    public ArrayList<Lecture> getLectures(){
-        return lectures;
-    }
-
-    public ArrayList<Lab> getLabs(){
-        return labs;
-    }
-
-    public ArrayList<Tutorial> getTutorials(){
-        return tutorials;
+    public ArrayList<Session> getSessions(){
+        return sessions;
     }
 
     // and just in case we need to reset
     // empties lectures, labs, and tutorials
     public void resetStudent(){
-        lectures.clear();
-        labs.clear();
-        tutorials.clear();
+        sessions.clear();
     }
 
     @Override
