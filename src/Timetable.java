@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Timetable {
-    private ArrayList<Room> facilities;
-    private ArrayList<Programme> programmes;
-    private ArrayList<Module> bookOfModules;
-    private ArrayList<Lecturer> lecturerBody;
-    private ArrayList<Student> studentBody;
+    private static ArrayList<Room> facilities;
+    private static ArrayList<Programme> programmes;
+    private static ArrayList<Module> bookOfModules;
+    private static ArrayList<Lecturer> lecturerBody;
+    private static ArrayList<Student> studentBody;
 
     // first readCSVs
     // then addSessions
@@ -13,7 +14,19 @@ public class Timetable {
     // if getMasterTimetable returns false, resetTimetable and try again like 3 times
     // then allow for queries
     public static void main(String args[]){
-
+        //READ CSVS HERE
+        // now that all of our data is in, we create all of our sessions
+        for(int i=0;i<10;i++) {
+            if (addSessions()) {
+                break;
+            } else {
+                resetTimetable();
+            }
+        }
+        // then we generate the master timetable
+        Session[][][] masterTimetable = getMasterTimetable();
+        // and read it out to a csv
+        // then allow for querying
     }
 
     // METHODS FOR READING IN DATA
@@ -21,42 +34,43 @@ public class Timetable {
     // reads in all csvs and passes data to the functions immediately below
     // so everything ends up in the right place
     // order to read in: rooms.csv, programmes.csv, modules.csv, sessions.csv, students.csv
-    public void readCSVs(){
+    public static void readCSVs(){
 
     }
 
-    public void addRoom(){
+    public static void addRoom(){
 
     }
 
-    public void addProgramme(){
+    public static void addProgramme(){
 
     }
 
     // creates a module using the information from modules.csv
     // and adds it to bookOfModules
-    public void addModule(){
+    public static void addModule(){
 
     }
 
     // adds the information from sessions.csv to the relevant module
-    public void completeModule(){
+    public static void completeModule(){
 
     }
 
     // helper method for completeModule which
-    public void addLecturer(String lecturerID){
+    public static void addLecturer(String lecturerID){
 
     }
 
     // adds a student to studentBody using information from students.csv
     // also adds that student to all of their modules
-    public void addStudent(String studentID, String programmeID, int year, int semester){
+    public static void addStudent(String studentID, String programmeID, int year, int semester){
 
     }
 
     // METHODS FOR SEARCHING BY IDS
-    public Module getModuleByID(String moduleID){
+
+    public static Module getModuleByID(String moduleID){
         for(Module m: bookOfModules){
             if(m.getModuleID().equals(moduleID)){
                 return m;
@@ -65,7 +79,7 @@ public class Timetable {
         return null;
     }
 
-    public Programme getProgrammeByID(String programmeID){
+    public static Programme getProgrammeByID(String programmeID){
         for(Programme p: programmes){
             if(p.getProgrammeID().equals(programmeID)){
                 return p;
@@ -74,7 +88,7 @@ public class Timetable {
         return null;
     }
 
-    public Student getStudentByID(String studentID){
+    public static Student getStudentByID(String studentID){
         for(Student s: studentBody){
             if(s.getStudentID().equals(studentID)){
                 return s;
@@ -83,7 +97,7 @@ public class Timetable {
         return null;
     }
 
-    public Lecturer getLecturerByID(String lecturerID){
+    public static Lecturer getLecturerByID(String lecturerID){
         for(Lecturer l: lecturerBody){
             if(l.getLecturerID().equals(lecturerID)){
                 return l;
@@ -92,7 +106,7 @@ public class Timetable {
         return null;
     }
 
-    public Room getRoomByID(String roomID){
+    public static Room getRoomByID(String roomID){
         for(Room r: facilities){
             if(r.getRoomID().equals(roomID)){
                 return r;
@@ -110,8 +124,16 @@ public class Timetable {
     // goes through every Module and creates their Lectures, Labs, and Tutorials
     // if any return false, return false
     // return true after finished adding Lectures, Labs, and Tutorials for all Modules
-    public boolean addSessions(){
-
+    public static boolean addSessions(){
+        for(Module m: bookOfModules){
+            if(!addLectures(m) || !addLabs(m) || !addTutorials(m))
+            {
+                // adding one of the sessions failed and we need to restart
+                return false;
+            }
+        }
+        // we added all sessions successfully!
+        return true;
     }
 
     // grabs the Students and relevant Lecturer from a module as well as any room reqs or student caps
@@ -122,8 +144,55 @@ public class Timetable {
     // if it doesn't, grab a new room and a new time and try again. If it doesn't work after like 5-10
     // "good" attempts (the room was an adequate capacity and type), split the x-hour long lecture into
     // x, hour long lectures and try each one individually. They don't all have to be in the same room
-    public boolean addLectures(Module module){
-
+    public static boolean addLectures(Module module){
+        int numAttempts = 10; // how many times it tries to find a suitable time and place for a session before it gives up
+        // for a lecture there is only ever one group, which simplifies things a bit
+        // first we try to spawn 1 session of length n where n is the number of hours of lab the module has
+        boolean success = false;
+        ArrayList<Session> sessions = new ArrayList<Session>();
+        for(int j=0;j<numAttempts;j++) {
+            Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
+            int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[0]);
+            if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
+                // no overlaps! we've got ourselves a session!
+                success = true;
+                Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LEC",possibleRoom,module.getLecturers()[0]);
+                sessions.add(session);
+                break;
+            }
+        }
+        if(!success){
+            // now we try to spawn in n sessions of length 1hr
+            for(int k=0;k<module.getHoursPerWeek()[0];k++){
+                for(int j=0;j<numAttempts;j++) {
+                    success = false;
+                    Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
+                    int[] possibleTime = possibleRoom.getAvailableTime(1);
+                    if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
+                        // no overlaps! we've got ourselves a session!
+                        success = true;
+                        Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LEC",possibleRoom,module.getLecturers()[0]);
+                        sessions.add(session);
+                        break;
+                    }
+                }
+                if(!success){
+                    // we failed too many times at generating a session
+                    return false;
+                }
+            }
+        }
+        // now we add that session to all of the students in it, the lecturer, and the room
+        for(Session session: sessions) {
+            for (Student s : module.getStudents()) {
+                s.addSession(session);
+            }
+            module.getLecturers()[0].addSession(session);
+            session.getRoom().addSession(session);
+        }
+        module.addLecture(new Lecture(sessions));
+        // success!
+        return true;
     }
     // pretty similar to addLectures but for Labs
     // but instead of adding one Lab for the Module, split the Students into n groups of m Students where
@@ -131,64 +200,219 @@ public class Timetable {
     // then do what we did with addLectures but only with the first m Students in the module's student array
     // then the next m etc etc
     // only return true after all Labs are added, if any fail after 5-10 good attempts, return false
-    public boolean addLabs(Module module){
-
+    public static boolean addLabs(Module module){
+        int numAttempts = 10; // how many times it tries to find a suitable time and place for a session before it gives up
+        // first we figure out how many lecture/lab/tutorial groups there are
+        int numGroups;
+        int groupSize;
+        if(module.getStudentCaps()[1] == null) {
+            numGroups = 1;
+            groupSize = module.getStudents().size();
+        }
+        else{
+            numGroups = (int) Math.ceil((((double) module.getStudents().size())/((double) module.getStudentCaps()[1])));
+            groupSize = (int) Math.ceil(((double) module.getStudents().size()/((double) numGroups)));
+        }
+        for(int i=0;i<numGroups;i++){
+            // for each group, we spawn some sessions
+            // first we try to spawn 1 session of length n where n is the number of hours of lab the module has
+            boolean success = false;
+            // now we grab whatever student group it is
+            ArrayList<Student> groupStudents;
+            if((i+1)*groupSize <= module.getStudents().size()) {
+                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, (i + 1) * groupSize);
+            }
+            else{
+                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, module.getStudents().size());
+            }
+            ArrayList<Session> groupSessions = new ArrayList<Session>();
+            for(int j=0;j<numAttempts;j++) {
+                Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
+                int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[1]);
+                if(!checkOverlap(groupStudents, module.getLecturers()[1], possibleTime)){
+                    // no overlaps! we've got ourselves a session!
+                    success = true;
+                    Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LAB",i,possibleRoom,module.getLecturers()[1]);
+                    groupSessions.add(session);
+                    break;
+                }
+            }
+            if(!success){
+                // now we try to spawn in n sessions of length 1hr
+                for(int k=0;k<module.getHoursPerWeek()[1];k++){
+                    for(int j=0;j<numAttempts;j++) {
+                        success = false;
+                        Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
+                        int[] possibleTime = possibleRoom.getAvailableTime(1);
+                        if(!checkOverlap(groupStudents, module.getLecturers()[1], possibleTime)){
+                            // no overlaps! we've got ourselves a session!
+                            success = true;
+                            Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LAB",i,possibleRoom,module.getLecturers()[1]);
+                            groupSessions.add(session);
+                            break;
+                        }
+                    }
+                    if(!success){
+                        // we failed too many times at generating a session
+                        return false;
+                    }
+                }
+            }
+            // now we add that session to all of the students in it, the lecturer, and the room
+            for(Session session: groupSessions) {
+                for (Student s : groupStudents) {
+                    s.addSession(session);
+                }
+                module.getLecturers()[1].addSession(session);
+                session.getRoom().addSession(session);
+            }
+            module.addLab(new Lab(groupSessions));
+        }
+        // success!
+        return true;
     }
     // almost identical to addLabs but for Tutorials
-    public boolean addTutorials(Module module){
-
+    public static boolean addTutorials(Module module){
+        int numAttempts = 10; // how many times it tries to find a suitable time and place for a session before it gives up
+        // first we figure out how many lecture/lab/tutorial groups there are
+        int numGroups;
+        int groupSize;
+        if(module.getStudentCaps()[2] == null) {
+            numGroups = 1;
+            groupSize = module.getStudents().size();
+        }
+        else{
+            numGroups = (int) Math.ceil((((double) module.getStudents().size())/((double) module.getStudentCaps()[2])));
+            groupSize = (int) Math.ceil(((double) module.getStudents().size()/((double) numGroups)));
+        }
+        for(int i=0;i<numGroups;i++){
+            // for each group, we spawn some sessions
+            // first we try to spawn 1 session of length n where n is the number of hours of tutorial the module has
+            boolean success = false;
+            // now we grab whatever student group it is
+            ArrayList<Student> groupStudents;
+            if((i+1)*groupSize <= module.getStudents().size()) {
+                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, (i + 1) * groupSize);
+            }
+            else{
+                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, module.getStudents().size());
+            }
+            ArrayList<Session> groupSessions = new ArrayList<Session>();
+            for(int j=0;j<numAttempts;j++) {
+                Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
+                int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[2]);
+                if(!checkOverlap(groupStudents, module.getLecturers()[2], possibleTime)){
+                    // no overlaps! we've got ourselves a session!
+                    success = true;
+                    Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"TUT",i,possibleRoom,module.getLecturers()[2]);
+                    groupSessions.add(session);
+                    break;
+                }
+            }
+            if(!success){
+                // now we try to spawn in n sessions of length 1hr
+                for(int k=0;k<module.getHoursPerWeek()[2];k++){
+                    for(int j=0;j<numAttempts;j++) {
+                        success = false;
+                        Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
+                        int[] possibleTime = possibleRoom.getAvailableTime(1);
+                        if(!checkOverlap(groupStudents, module.getLecturers()[2], possibleTime)){
+                            // no overlaps! we've got ourselves a session!
+                            success = true;
+                            Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"TUT",i,possibleRoom,module.getLecturers()[2]);
+                            groupSessions.add(session);
+                            break;
+                        }
+                    }
+                    if(!success){
+                        // we failed too many times at generating a session
+                        return false;
+                    }
+                }
+            }
+            // now we add that session to all of the students in it, the lecturer, and the room
+            for(Session session: groupSessions) {
+                for (Student s : groupStudents) {
+                    s.addSession(session);
+                }
+                module.getLecturers()[2].addSession(session);
+                session.getRoom().addSession(session);
+            }
+            module.addTutorial(new Tutorial(groupSessions));
+        }
+        // success!
+        return true;
     }
+
+
+    public static boolean checkOverlap(ArrayList<Student> students, Lecturer lecturer, int[] timeSlot){
+        for(Session s: lecturer.getSessions()){
+            if(s.checkOverlap(timeSlot[0],timeSlot[1],timeSlot[2])){
+                // Overlap!
+                return true;
+            }
+        }
+        for(Student stu: students){
+            for(Session s: lecturer.getSessions()){
+                if(s.checkOverlap(timeSlot[0],timeSlot[1],timeSlot[2])){
+                    // Overlap!
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     // deletes all Lectures, Labs, Tutorials, and Sessions in every Module, Student, Lecturer, and Room
     // so that we can populate again
-    public void resetTimetable(){
-
+    public static void resetTimetable(){
+        for(Module m: bookOfModules){
+            m.resetModule();
+        }
     }
 
     // METHODS FOR ANSWERING QUERIES AND GENERATING TIMETABLES
-    // they all take in a two dimensional array of Session ArrayLists
+    // they all take in a three dimensional Session array
     // these represent the day and then the hour and then a list of all the sessions happening then
     // even though a Student and a Lecturer only have at most 1 session in any given time slot
-    // we still use an ArrayList of Sessions instead of a Session for consistency
+    // we still use an array of length 1 instead of a Session for consistency
+    // because modules, groups, and the master timetable can have sessions simultaneously
+    // we give them a size of facilities.size() because
+    // there will never be more sessions simultaneously than there are rooms in facilities
+    // but there could be exactly that many if everything filled up
 
     // generates a timetable for a student
-    public Session[][][] getStudentTimetable(String studentID){
+    public static Session[][][] getStudentTimetable(String studentID){
         Session[][][] studentTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
-        Student stu = getStudentByID(studentID);
-        for(Lecture l: stu.getLectures()){
-            for(Session s: l.getSessions()){
-                // fill every slot that that session is during
-                for(int i=s.getStartTime();i<s.getEndTime();i++){
-                    studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
-                    // then increase the index
-                    nextFreeIndex[s.getDay()][i]++;
-                }
-            }
-        }
-        // and labs and tutorials work almost exactly the same as lectures
-        // except that a module can have multiple of them
-        for(Lab l: stu.getLabs()){
-            for(Session s: l.getSessions()){
-                for(int i=s.getStartTime();i<s.getEndTime();i++){
-                    studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
-                    nextFreeIndex[s.getDay()][i]++;
-                }
-            }
-        }
-        for(Tutorial t: stu.getTutorials()){
-            for(Session s: t.getSessions()){
-                for(int i=s.getStartTime();i<s.getEndTime();i++){
-                    studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]]=s;
-                    nextFreeIndex[s.getDay()][i]++;
-                }
+        for(Session s: getStudentByID(studentID).getSessions()) {
+            // fill every slot that that session is during
+            for (int i = s.getStartTime(); i < s.getEndTime(); i++) {
+                studentTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]] = s;
+                // then increase the index
+                nextFreeIndex[s.getDay()][i]++;
             }
         }
         return studentTimetable;
     }
 
+    public static Session[][][] getRoomTimetable(String roomID){
+        Session[][][] roomTimetable = new Session[5][9][1];
+        int[][] nextFreeIndex = new int[5][9];
+        for(Session s: getRoomByID(roomID).getSessions()) {
+            // fill every slot that that session is during
+            for (int i = s.getStartTime(); i < s.getEndTime(); i++) {
+                roomTimetable[s.getDay()][i][nextFreeIndex[s.getDay()][i]] = s;
+                // then increase the index
+                nextFreeIndex[s.getDay()][i]++;
+            }
+        }
+        return roomTimetable;
+    }
+
     // generates a timetable for a lecturer
-    public Session[][][] getLecturerTimetable(String lecturerID){
+    public static Session[][][] getLecturerTimetable(String lecturerID){
         Session[][][] lecturerTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getLecturerByID(lecturerID).getSessions()){
@@ -202,7 +426,7 @@ public class Timetable {
     }
 
     // generates a timetable for a module
-    public Session[][][] getModuleTimetable(String moduleID){
+    public static Session[][][] getModuleTimetable(String moduleID){
         Session[][][] moduleTimetable = new Session[5][9][facilities.size()];
         int[][] nextFreeIndex = new int[5][9];
         Module m = getModuleByID(moduleID);
@@ -237,7 +461,7 @@ public class Timetable {
     }
 
     // generates the timetable for a given year and semester of a programme
-    public Session[][][] getGroupTimetable(String programmeID, int year, int semester){
+    public static Session[][][] getGroupTimetable(String programmeID, int year, int semester){
         Session[][][] groupTimetable = new Session[5][9][facilities.size()];
         // by default filled with 0s
         int[][] nextFreeIndex = new int[5][9];
@@ -275,7 +499,7 @@ public class Timetable {
     }
 
     // generates the timetable for every session being offered
-    public Session[][][] getMasterTimetable(){
+    public static Session[][][] getMasterTimetable(){
         // by default filled with nulls
         Session[][][] masterTimetable = new Session[5][9][facilities.size()];
         // by default filled with 0s
@@ -314,7 +538,7 @@ public class Timetable {
     }
 
     // takes in a timetable and turns it into a string
-    public String toString(ArrayList<Session>[][] sessions){
+    public static String toString(Session[][][] sessions){
 
     }
 }
