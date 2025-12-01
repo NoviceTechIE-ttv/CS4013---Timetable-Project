@@ -153,7 +153,7 @@ public class Timetable {
         ArrayList<Session> sessions = new ArrayList<Session>();
         for(int j=0;j<numAttempts;j++) {
             Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-            if((module.getRoomReqs()[0]==null || possibleRoom.getType().equals(module.getRoomReqs()[0]))&&module.getStudents.size()<=possibleRoom.getCapacity()){
+            if((module.getRoomReqs()[0]==null || possibleRoom.getType().equals(module.getRoomReqs()[0]))&&module.getStudents().size()<=possibleRoom.getCapacity()){
                 int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[0]);
                 if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
                     // no overlaps! we've got ourselves a session!
@@ -170,7 +170,7 @@ public class Timetable {
                 for(int j=0;j<numAttempts;j++) {
                     success = false;
                     Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-                    if((module.getRoomReqs()[0]==null || possibleRoom.getType().equals(module.getRoomReqs()[0]))&&module.getStudents.size()<=possibleRoom.getCapacity()){
+                    if((module.getRoomReqs()[0]==null || possibleRoom.getType().equals(module.getRoomReqs()[0]))&&module.getStudents().size()<=possibleRoom.getCapacity()){
                         int[] possibleTime = possibleRoom.getAvailableTime(1);
                         if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
                             // no overlaps! we've got ourselves a session!
