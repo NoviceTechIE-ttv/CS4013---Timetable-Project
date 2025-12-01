@@ -353,8 +353,13 @@ public class Timetable {
     }
 
     // helper method for completeModule which
-    public static void addLecturer(String lecturerID){
-        new Lecturer(lecturerID);
+    private Lecturer getOrCreateLecturer(String lecturerID){
+        Lecturer l = getLecturerByID(lecturerID);
+        if (l == null) {
+            l = new Lecturer(lecturerID);
+            lecturerBody.add(l);
+        }
+        return l;
     }
 
     // adds a student to studentBody using information from students.csv
