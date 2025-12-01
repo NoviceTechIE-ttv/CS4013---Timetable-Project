@@ -61,6 +61,14 @@ public class Module {
         return hoursPerWeek;
     }
 
+    public String[] getRoomReqs(){
+        return roomReqs;
+    }
+
+    public int[] getStudentCaps(){
+        return studentCaps;
+    }
+
     public Lecturer[] getLecturers(){
         return lecturers;
     }
