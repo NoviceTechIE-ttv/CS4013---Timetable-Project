@@ -1,0 +1,224 @@
+moduleCode,moduleName
+
+
+
+
+
+
+
+# LM121 – COMMON ENTRY COMPUTER SCIENCE (YEAR 1)
+
+CS4012,Representation and Modelling
+CS4141,Introduction to Programming
+CS4221,Foundations of Computer Science 1
+ET4011,Fundamentals of Computer Organisation
+MS4111,Discrete Mathematics
+
+CS4043,Games Modelling Design
+CS4222,Software Development
+CS4182,Foundations of Computer Science 2
+ET4162,Computing Systems Organisation
+MA4402,Computer Maths 2
+
+
+
+
+
+
+
+# LM121-CS – BSc COMPUTER SYSTEMS
+
+# Year 2
+CS4013,Object Oriented Development
+CS4023,Operating Systems
+CS4416,Database Systems
+CS4004,Software Testing and Inspection
+CS4178,Software Requirements and Modelling
+
+CS4006,Intelligent Systems
+CS4076,Event Driven Programming
+CS4115,Data Structures and Algorithms
+CS4815,Computer Graphics
+MA4413,Statistics for Computing
+
+# Year 3
+CS4230,Cooperative Education
+CS4310,Cooperative Education
+
+CS4457,Project Management and Practice
+CS4187,Professional Issues in Computing
+CS4084,Mobile Application Development
+CS4116,Software Development Project
+CS4106,Machine Learning: Methods and Applications
+
+# Year 4
+CS4617,Computer Systems Project 1
+CS4125,Systems Analysis and Design
+CS4207,Advanced Programming Concepts and Practices
+CS4337,Big Data Management and Security
+CS4287,Neural Computing
+
+CS4618,Computer Systems Project 2
+CS4227,Software Design and Architecture
+CS4158,Programming Language Technology
+CS4168,Data Mining
+
+
+
+
+
+
+# LM121-CYB – BSc CYBER SECURITY & IT FORENSICS
+
+# Year 2
+CE4703,Computer Software 3
+CE4607,Computer Networks 1
+ET4023,Introduction to Security and Cryptography
+ED5081,Introduction to Web and Database Technology
+ET4033,ESustainability and Technology
+
+ET4024,Next Generation Networking
+ET4014,Data Security
+ET4334,Introduction to Cloud Computing
+ED5042,Mobile App Development
+
+# Year 3
+ET4047,Embedded Software
+EE6003,Converged Networks
+CE5041,Cybersecurity Law and Regulations
+ET4244,Outcome Based Learning Laboratory
+ET4437,Distributed Computing and Java
+COOP,Cooperative Education
+
+# Year 4
+CE4051,Introduction to Data Engineering and Machine Learning
+CE5031,OT/ICS Networks and Protocols
+CE4706,Software Engineering 1
+ET4307,Applied Cloud Computing
+ET4927,Project 1
+
+EE6022,Biometrics
+CE5032,Secure OT/ICS Networks
+CE5022,Log Files and Event Analysis
+ET4028,Host and Network Security
+ET4928,Project 2
+
+
+
+
+
+# LM121-GAM – BSc COMPUTER GAMES DEVELOPMENT
+
+# Year 1 (common with LM121)
+CS4012,Representation and Modelling
+CS4141,Introduction to Programming
+CS4221,Foundations of Computer Science 1
+ET4011,Fundamentals of Computer Organisation
+MS4111,Discrete Mathematics
+
+CS4043,Games Modelling Design
+CS4222,Software Development
+CS4182,Foundations of Computer Science 2
+ET4162,Computing Systems Organisation
+MA4402,Computer Maths 2
+
+# Year 2
+CS4013,Object Oriented Development
+CS4023,Operating Systems
+CS4416,Database Systems
+CS4004,Software Testing and Inspection
+CS4093,Games for Global Markets
+
+CS4006,Intelligent Systems
+CS4076,Event Driven Programming
+CS4115,Data Structures and Algorithms
+CS4815,Computer Graphics
+MA4413,Statistics for Computing
+
+# Year 3
+CS4151,Digital Modelling and Animation
+CS4071,Virtual and Augmented Reality Design
+CS4084,Mobile Application Development
+CS4096,Artificial Intelligence for Games
+CS4106,Machine Learning: Methods and Applications
+
+CoopGAM,Cooperative Education (Games)
+
+# Year 4
+CS4207,Advanced Programming Concepts and Practices
+CS4085,Computer Graphics II: Tools and Techniques
+CS4125,Systems Analysis and Design
+CS4287,Neural Computing
+CS4197,Computer Games Development Project 1
+
+CS4198,Computer Games Development Project 2
+CS4227,Software Design and Architecture
+CS4067,Writing Games Analysis
+CS4168,Data Mining
+
+
+
+
+
+
+
+
+# LM118 – MUSIC, MEDIA & PERFORMANCE TECHNOLOGY
+
+
+# Year 1
+CS4231,Graphic Design
+CS4031,Introduction to Digital Media
+CS4061,Media Programming 1
+CS4025,Digital Audio Fundamentals
+MA4701,Technological Mathematics 1
+CS4005,Perceptual Systems and Multimedia
+CS4082,Introduction to Web Development
+CS4072,Media Programming 2
+CS4232,Music and Computers
+CS4066,Algorithmic and Generative Composition
+
+# Year 2
+CS4019,Digital Arts 1
+CS4083,Sound Synthesis
+CS4053,Digital Video Fundamentals
+CS4151,Digital Modelling and Animation
+SO4033,Sociology of Media
+CS4029,Advanced Audio Production
+CS4174,Performance Technology 1
+CS4056,Mobile Application Design
+CS4009,Directed Studies
+CS4826,Human-Computer Interaction
+
+# Year 3
+C04310,Cooperative Education
+CS4030,Digital Arts 2
+CS4040,Advanced Video Production
+CS4242,Machine Learning for Interactive Systems
+CS4126,3D Modelling and Digital Fabrication
+CS4457,Project Management and Practice
+
+# Year 4
+CS4237,Music and Media Project 1
+CS4059,Creative Coding
+CS4071,Virtual and Augmented Reality Design
+CS4107,Performance Technology 2
+CS4268,Music and Media Project 2
+CS4049,Visual Coding
+CS4047,Multimedia Industry Perspectives
+
+
+
+
+
+# LK489 – MASTER OF ENGINEERING IN COMPUTER VISION & AI
+
+CE4041,Artificial Intelligence
+CS6021,Machine Vision
+CS6461,Computer Vision Systems
+IN6031,Artificial Intelligence and Governance
+CE6026,Introduction to Engineering Research Methods
+CS5024,Theory and Practice of Advanced AI Ecosystems
+EE6008,Deep Learning at the Edge
+CE5002,Geometric Computer Vision
+CE5021,Deep Learning for Computer Vision
