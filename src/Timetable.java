@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Timetable {
     private static ArrayList<Room> facilities;
@@ -8,6 +13,19 @@ public class Timetable {
     private static ArrayList<Lecturer> lecturerBody;
     private static ArrayList<Student> studentBody;
 
+    // helper: moduleCode -> {lectureHours, tutorialHours, labHours}
+    private Map<String, int[]> moduleHoursMap = new HashMap<>();
+
+    // constructor – initialise all your lists/maps
+    public Timetable() {
+        facilities     = new ArrayList<>();
+        programmes     = new ArrayList<>();
+        bookOfModules  = new ArrayList<>();
+        lecturerBody   = new ArrayList<>();
+        studentBody    = new ArrayList<>();
+        moduleHoursMap = new HashMap<>();
+    }
+    
     // first readCSVs
     // then addSessions
     // then getMasterTimetable
@@ -35,8 +53,284 @@ public class Timetable {
     // so everything ends up in the right place
     // order to read in: rooms.csv, programmes.csv, modules.csv, sessions.csv, students.csv
     public static void readCSVs(){
+public void readCSVs(){
+        // (re)initialise all lists and maps in case this is called more than once
+        facilities     = new ArrayList<>();
+        programmes     = new ArrayList<>();
+        bookOfModules  = new ArrayList<>();
+        lecturerBody   = new ArrayList<>();
+        studentBody    = new ArrayList<>();
+        moduleHoursMap = new HashMap<>();
 
+        // base folder for CSVs
+        String basePath = "src/csv/";
+
+        // 1. read rooms
+        readRoomsCSV("rooms.csv");
+
+        // 2. read programmes and programme->modules mapping
+        readProgrammesCSV("programmes.csv", "programme_module.csv");
+
+        // 3. read module hours and then module list
+        readModuleHoursCSV("module_hours.csv");
+        readModulesCSV("modules.csv");
+
+        // 4. complete modules with lecturer / caps / room types
+        readSessionsCSV("sessions.csv");
+
+        // 5. read students and attach them to modules
+        readStudentsCSV("students.csv");
     }
+
+    // === PRIVATE HELPERS FOR CSV READING ===
+
+    private void readRoomsCSV(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line = br.readLine(); // skip header: Room,Type,Capacity
+
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) {
+                    continue; // skip blank/comment lines
+                }
+
+                String[] parts = line.split(",");
+                if (parts.length < 3) {
+                    continue; // malformed line, ignore
+                }
+
+                String roomID  = parts[0].trim();
+                String type    = parts[1].trim();
+                int capacity   = Integer.parseInt(parts[2].trim());
+
+                Room room = new Room(roomID, type, capacity);
+                facilities.add(room);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + filename);
+            e.printStackTrace();
+        }
+    }
+
+    private void readProgrammesCSV(String programmesFile, String programmeModulesFile) {
+        ArrayList<String> programmeCodes = new ArrayList<>();
+
+        // 1) read programme codes from programmes.csv
+        try (BufferedReader br = new BufferedReader(new FileReader(programmesFile))) {
+            String line = br.readLine(); // header
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split(",");
+                if (parts.length < 1) continue;
+
+                String code = parts[0].trim();
+                programmeCodes.add(code);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + programmesFile);
+            e.printStackTrace();
+        }
+
+        // helper inner class to store modules per year/semester
+        class ModuleGrid {
+            ArrayList<String>[][] grid = new ArrayList[5][3]; // [year][semester]
+            ModuleGrid() {
+                for (int y = 0; y < 5; y++) {
+                    for (int s = 0; s < 3; s++) {
+                        grid[y][s] = new ArrayList<>();
+                    }
+                }
+            }
+        }
+
+        Map<String, ModuleGrid> progMap = new HashMap<>();
+        for (String code : programmeCodes) {
+            progMap.put(code, new ModuleGrid());
+        }
+
+        // 2) fill grid from programme_module.csv
+        try (BufferedReader br = new BufferedReader(new FileReader(programmeModulesFile))) {
+            String line = br.readLine(); // header
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split(",");
+                if (parts.length < 4) continue;
+
+                String programmeID = parts[0].trim();
+                int year           = Integer.parseInt(parts[1].trim());
+                int semester       = Integer.parseInt(parts[2].trim());
+                String moduleCode  = parts[3].trim();
+
+                ModuleGrid mg = progMap.get(programmeID);
+                if (mg != null && year >= 1 && year <= 4 && semester >= 1 && semester <= 2) {
+                    mg.grid[year][semester].add(moduleCode);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + programmeModulesFile);
+            e.printStackTrace();
+        }
+
+        // 3) build Programme objects
+        for (String code : programmeCodes) {
+            ModuleGrid mg = progMap.get(code);
+            String[][][] modulesBySemester = new String[5][3][];
+            for (int y = 1; y <= 4; y++) {
+                for (int s = 1; s <= 2; s++) {
+                    ArrayList<String> list = mg.grid[y][s];
+                    modulesBySemester[y][s] = list.toArray(new String[0]);
+                }
+            }
+            Programme p = new Programme(code, modulesBySemester);
+            programmes.add(p);
+        }
+    }
+
+    private void readModuleHoursCSV(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line = br.readLine(); // header
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split(",");
+                if (parts.length < 4) continue;
+
+                String code   = parts[0].trim();
+                String lecStr = parts[1].trim();
+                String tutStr = parts[2].trim();
+                String labStr = parts[3].trim();
+
+                int lec = lecStr.isEmpty() ? 0 : Integer.parseInt(lecStr);
+                int tut = tutStr.isEmpty() ? 0 : Integer.parseInt(tutStr);
+                int lab = labStr.isEmpty() ? 0 : Integer.parseInt(labStr);
+
+                moduleHoursMap.put(code, new int[]{lec, tut, lab});
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + filename);
+            e.printStackTrace();
+        }
+    }
+
+    private void readModulesCSV(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line = br.readLine(); // header: moduleCode,moduleName
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split(",");
+                if (parts.length < 1) continue;
+
+                String code = parts[0].trim();
+                int[] hours = moduleHoursMap.getOrDefault(code, new int[]{0, 0, 0});
+
+                Module m = new Module(code, hours);
+                bookOfModules.add(m);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + filename);
+            e.printStackTrace();
+        }
+    }
+
+    private void readSessionsCSV(String filename) {
+        // temporary maps to collect per-module data
+        Map<String, Lecturer[]> lectMap = new HashMap<>();
+        Map<String, int[]> capsMap      = new HashMap<>();
+        Map<String, String[]> roomMap   = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line = br.readLine(); // header
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split(",");
+                if (parts.length < 5) continue;
+
+                String code       = parts[0].trim();
+                String classType  = parts[1].trim().toLowerCase();
+                String capStr     = parts[2].trim();
+                String roomType   = parts[3].trim();
+                String lecturerID = parts[4].trim();
+
+                int idx;
+                if (classType.equals("lecture"))      idx = 0;
+                else if (classType.equals("lab"))     idx = 1;
+                else if (classType.equals("tutorial"))idx = 2;
+                else continue; // unknown type
+
+                Lecturer[] la = lectMap.get(code);
+                int[] caps    = capsMap.get(code);
+                String[] rooms= roomMap.get(code);
+
+                if (la == null) {
+                    la    = new Lecturer[3];
+                    caps  = new int[3];
+                    rooms = new String[3];
+                    lectMap.put(code, la);
+                    capsMap.put(code, caps);
+                    roomMap.put(code, rooms);
+                }
+
+                Lecturer lecturer = getOrCreateLecturer(lecturerID);
+                la[idx] = lecturer;
+
+                if (!capStr.isEmpty()) {
+                    caps[idx] = Integer.parseInt(capStr);
+                } else {
+                    caps[idx] = 0;
+                }
+
+                rooms[idx] = roomType;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + filename);
+            e.printStackTrace();
+        }
+
+        // apply collected data to each Module
+        for (Module m : bookOfModules) {
+            String code = m.getModuleID();
+            Lecturer[] la = lectMap.get(code);
+            int[] caps    = capsMap.get(code);
+            String[] rooms= roomMap.get(code);
+
+            if (la != null && caps != null && rooms != null) {
+                m.completeModule(la, caps, rooms);
+            }
+        }
+    }
+
+    private void readStudentsCSV(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line = br.readLine(); // header
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                String[] parts = line.split(",");
+                if (parts.length < 4) continue;
+
+                String studentID   = parts[0].trim();
+                String programmeID = parts[1].trim();
+                int year           = Integer.parseInt(parts[2].trim());
+                int semester       = Integer.parseInt(parts[3].trim());
+
+                addStudent(studentID, programmeID, year, semester);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading " + filename);
+            e.printStackTrace();
+        }
+    }
+    
 
     public static void addRoom(){
 
@@ -60,13 +354,27 @@ public class Timetable {
 
     // helper method for completeModule which
     public static void addLecturer(String lecturerID){
-
+        getOrCreateLecturer(lecturerID);
     }
 
     // adds a student to studentBody using information from students.csv
     // also adds that student to all of their modules
-    public static void addStudent(String studentID, String programmeID, int year, int semester){
+    public void addStudent(String studentID, String programmeID, int year, int semester){
+        Student s = new Student(studentID, programmeID, year, semester);
+        studentBody.add(s);
 
+        Programme p = getProgrammeByID(programmeID);
+        if (p == null) return;
+
+        String[] moduleCodes = p.getModulesForSemester(year, semester);
+        if (moduleCodes == null) return;
+
+        for (String code : moduleCodes) {
+            Module m = getModuleByID(code);
+            if (m != null) {
+                m.addStudent(s);
+            }
+        }
     }
 
     // METHODS FOR SEARCHING BY IDS
