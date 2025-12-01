@@ -22,13 +22,17 @@ public class Room {
 
     // utility functions
 
-    // returns a random available time slot ([startTime, endTime]) of [duration] hours
+    // returns a random available time slot ([day, startTime, endTime]) of [duration] hours
     // if none exists, return null
     // it HAS to be random not first available or the whole system breaks
     // make a list of all starting times where the next [duration] hours are available
     // then pick one at random
     public int[] getAvailableTime(int duration){
 
+    }
+
+    public void addSession(Session session){
+        sessions.add(session);
     }
 
     // Boring getters
