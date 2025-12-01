@@ -52,8 +52,8 @@ public class Timetable {
     // reads in all csvs and passes data to the functions immediately below
     // so everything ends up in the right place
     // order to read in: rooms.csv, programmes.csv, modules.csv, sessions.csv, students.csv
-    public static void readCSVs(){
-public void readCSVs(){
+    public void readCSVs(){
+
         // (re)initialise all lists and maps in case this is called more than once
         facilities     = new ArrayList<>();
         programmes     = new ArrayList<>();
@@ -279,7 +279,7 @@ public void readCSVs(){
                     roomMap.put(code, rooms);
                 }
 
-                Lecturer lecturer = getOrCreateLecturer(lecturerID);
+                Lecturer lecturer = new Lecturer(lecturerID);
                 la[idx] = lecturer;
 
                 if (!capStr.isEmpty()) {
@@ -354,7 +354,7 @@ public void readCSVs(){
 
     // helper method for completeModule which
     public static void addLecturer(String lecturerID){
-        getOrCreateLecturer(lecturerID);
+        new Lecturer(lecturerID);
     }
 
     // adds a student to studentBody using information from students.csv
