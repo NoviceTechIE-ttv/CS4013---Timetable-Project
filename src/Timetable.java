@@ -384,7 +384,7 @@ public class Timetable {
 
     // METHODS FOR SEARCHING BY IDS
 
-    public static Module getModuleByID(String moduleID){
+    public Module getModuleByID(String moduleID){
         for(Module m: bookOfModules){
             if(m.getModuleID().equals(moduleID)){
                 return m;
@@ -393,7 +393,7 @@ public class Timetable {
         return null;
     }
 
-    public static Programme getProgrammeByID(String programmeID){
+    public Programme getProgrammeByID(String programmeID){
         for(Programme p: programmes){
             if(p.getProgrammeID().equals(programmeID)){
                 return p;
@@ -402,7 +402,7 @@ public class Timetable {
         return null;
     }
 
-    public static Student getStudentByID(String studentID){
+    public Student getStudentByID(String studentID){
         for(Student s: studentBody){
             if(s.getStudentID().equals(studentID)){
                 return s;
@@ -411,7 +411,7 @@ public class Timetable {
         return null;
     }
 
-    public static Lecturer getLecturerByID(String lecturerID){
+    public Lecturer getLecturerByID(String lecturerID){
         for(Lecturer l: lecturerBody){
             if(l.getLecturerID().equals(lecturerID)){
                 return l;
@@ -420,7 +420,7 @@ public class Timetable {
         return null;
     }
 
-    public static Room getRoomByID(String roomID){
+    public Room getRoomByID(String roomID){
         for(Room r: facilities){
             if(r.getRoomID().equals(roomID)){
                 return r;
@@ -438,7 +438,7 @@ public class Timetable {
     // goes through every Module and creates their Lectures, Labs, and Tutorials
     // if any return false, return false
     // return true after finished adding Lectures, Labs, and Tutorials for all Modules
-    public static boolean addSessions(){
+    public boolean addSessions(){
         for(Module m: bookOfModules){
             if(!addLectures(m) || !addLabs(m) || !addTutorials(m))
             {
