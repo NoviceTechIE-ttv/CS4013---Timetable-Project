@@ -18,65 +18,76 @@ public class Module {
 
     // initial constructor, fills out info from modules.csv
     public Module(String moduleID, int[] hoursPerWeek){
+        this.moduleID = moduleID;
+        this.hoursPerWeek = hoursPerWeek;
+
+        this.students = new ArrayList<>();
+        this.labGroups = new ArrayList<>();
+        this.tutGroups = new ArrayList<>();
 
     }
     // fills out the rest of the information from sessions.csv
     public void completeModule(Lecturer[] lecturers, int[] studentCaps, String[] roomReqs){
-
+        this.lecturers = lecturers;
+        this.studentCaps = studentCaps;
+        this.roomReqs = roomReqs;
     }
 
     // boring adders
 
     public void addStudent(Student student){
-
+        students.add(student);
     }
 
     public void addLecture(Lecture lecture){
-
+        this.lecture = lecture;
     }
 
     public void addLab(Lab lab){
-
+        this.labGroups.add(lab);
     }
 
     public void addTutorial(Tutorial tutorial){
-
+        this.tutGroups.add(tutorial);
     }
 
     // boring getters
 
     public String getModuleID(){
-
+        return moduleID;
     }
 
     public int[] getHoursPerWeek(){
-
+        return hoursPerWeek;
     }
 
     public Lecturer[] getLecturers(){
-
+        return lecturers;
     }
 
     public ArrayList<Student> getStudents(){
-
+        return students;
     }
 
     public Lecture getLecture(){
-
+        return lecture;
     }
 
     public ArrayList<Lab> getLabs(){
-
+        return labGroups;
     }
 
     public ArrayList<Tutorial> getTutorials(){
-
+        return tutGroups;
     }
 
     // and just in case we need to reset
     // empties lectures, labs, and tutorials
     public void resetModule(){
-
+        lecture = null;
+        students = null;
+        labGroups = null;
+        tutGroups = null;
     }
 
 }
