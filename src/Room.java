@@ -30,15 +30,15 @@ public class Room {
     // then pick one at random
     public int[] getAvailableTime(int duration){
         ArrayList<int[]> availableSlots = new ArrayList<>();
-        
+
         for (int day = 0; day < 5; day++) {
-            
+
             for (int hour = 0; hour <= 10 - duration; hour++) {
                 boolean free = true;
-                
+
                 for (int h = hour; h < hour + duration; h++) {
                     if (timeSlots[day][h]) {
-                        
+
                         free = false;
                         break;
                     }
@@ -48,20 +48,10 @@ public class Room {
                 }
             }
         }
-        
+
         if (availableSlots.isEmpty()) return null;
         int[] slot = availableSlots.get((int)(Math.random() * availableSlots.size()));
         return slot;
-    }
-
-        if (validTimes.isEmpty()) {
-            return null;
-        }
-
-        Random rand = new Random();
-        return validTimes.get(rand.nextInt(validTimes.size()));
-
-
     }
 
     public void addSession(Session session){
