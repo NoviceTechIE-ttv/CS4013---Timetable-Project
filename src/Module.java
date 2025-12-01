@@ -93,9 +93,13 @@ public class Module {
     // empties lectures, labs, and tutorials
     public void resetModule(){
         lecture = null;
-        students = null;
-        labGroups = null;
-        tutGroups = null;
+        if (labGroups != null) {
+            labGroups.clear();
+        }
+        if (tutGroups != null) {
+            tutGroups.clear();
+        }
     }
 
 }
+
