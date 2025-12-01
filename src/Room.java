@@ -29,26 +29,30 @@ public class Room {
     // make a list of all starting times where the next [duration] hours are available
     // then pick one at random
     public int[] getAvailableTime(int duration){
-        ArrayList<int[]> validTimes = new ArrayList<>();
-
+        ArrayList<int[]> availableSlots = new ArrayList<>();
+        
         for (int day = 0; day < 5; day++) {
-
-            for (int start = 0; start <= 10 - duration; start++) {
-
+            
+            for (int hour = 0; hour <= 10 - duration; hour++) {
                 boolean free = true;
-
-                for (int h = 0; h < duration; h++) {
-                    if (timeSlots[day][start + h]) {
+                
+                for (int h = hour; h < hour + duration; h++) {
+                    if (timeSlots[day][h]) {
+                        
                         free = false;
                         break;
                     }
                 }
-
                 if (free) {
-                    validTimes.add(new int[]{day, start, start + duration});
+                    availableSlots.add(new int[]{day, hour, hour + duration, duration});
                 }
             }
         }
+        
+        if (availableSlots.isEmpty()) return null;
+        int[] slot = availableSlots.get((int)(Math.random() * availableSlots.size()));
+        return slot;
+    }
 
         if (validTimes.isEmpty()) {
             return null;
