@@ -1,104 +1,39 @@
 import java.util.ArrayList;
 
-public class Module {
-    // first what we read in from modules.csv
-    private String moduleID;
-    private int[] hoursPerWeek; // the hours per week a student will spend in lecture/lab/tutorial
-    // then what we read in from our sessions.csv
-    // they will be used to initialize Lectures, Labs, and Tutorials
-    private Lecturer[] lecturers; // the lecturer for the lectures/labs/tutorials
-    private int[] studentCaps; // the most students that can be in a group for lectures/labs/tutorials
-    private String[] roomReqs; // the required room type for the lectures/labs/tutorials
-    // when a student is added to the timetable, they also get added to every module they are in
-    private ArrayList<Student> students; // all students taking this module
-    // the Lecture, Lab, and Tutorial objects that are part of the module
-    private Lecture lecture; // the Lecture object for this module
-    private ArrayList<Lab> labGroups; // the Lab objects for this module
-    private ArrayList<Tutorial> tutGroups; // the Tutorial objects for this module
+public class Lecturer {
+    private String lecturerID;
+    private ArrayList<Session> sessions;
 
-    // initial constructor, fills out info from modules.csv
-    public Module(String moduleID, int[] hoursPerWeek){
-        this.moduleID = moduleID;
-        this.hoursPerWeek = hoursPerWeek;
-
-        this.students = new ArrayList<>();
-        this.labGroups = new ArrayList<>();
-        this.tutGroups = new ArrayList<>();
-
-    }
-    // fills out the rest of the information from sessions.csv
-    public void completeModule(Lecturer[] lecturers, int[] studentCaps, String[] roomReqs){
-        this.lecturers = lecturers;
-        this.studentCaps = studentCaps;
-        this.roomReqs = roomReqs;
+    // constructor only needs the ID, sessions will be added later
+    public Lecturer(String lecturerID){
+        this.lecturerID = lecturerID;
+        this.sessions = new ArrayList<>();
     }
 
     // boring adders
 
-    public void addStudent(Student student){
-        students.add(student);
-    }
-
-    public void addLecture(Lecture lecture){
-        this.lecture = lecture;
-    }
-
-    public void addLab(Lab lab){
-        this.labGroups.add(lab);
-    }
-
-    public void addTutorial(Tutorial tutorial){
-        this.tutGroups.add(tutorial);
+    public void addSession(Session session){
+        this.sessions.add(session);
     }
 
     // boring getters
 
-    public String getModuleID(){
-        return moduleID;
+    public String getLecturerID(){
+        return this.lecturerID;
     }
 
-    public int[] getHoursPerWeek(){
-        return hoursPerWeek;
+    public ArrayList<Session> getSessions(){
+        return this.sessions;
     }
 
-    public String[] getRoomReqs(){
-        return roomReqs;
+    // and in case we need to reset
+    // empties our sessions ArrayList
+    public void resetLecturer(){
+        this.sessions.clear();
     }
 
-    public int[] getStudentCaps(){
-        return studentCaps;
+    @Override
+    public String toString(){
+        return "Lecturer ID :" + lecturerID;
     }
-
-    public Lecturer[] getLecturers(){
-        return lecturers;
-    }
-
-    public ArrayList<Student> getStudents(){
-        return students;
-    }
-
-    public Lecture getLecture(){
-        return lecture;
-    }
-
-    public ArrayList<Lab> getLabs(){
-        return labGroups;
-    }
-
-    public ArrayList<Tutorial> getTutorials(){
-        return tutGroups;
-    }
-
-    // and just in case we need to reset
-    // empties lectures, labs, and tutorials
-    public void resetModule(){
-        lecture = null;
-        if (labGroups != null) {
-            labGroups.clear();
-        }
-        if (tutGroups != null) {
-            tutGroups.clear();
-        }
-    }
-
 }
