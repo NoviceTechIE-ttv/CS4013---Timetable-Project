@@ -40,8 +40,21 @@ public class Session {
         return this.startTime < endTime && startTime < this.endTime;
     }
 
-    // no setters or adders as the session will not change
+    public void setDay(int day) {
+    this.day = day;
+    }
 
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
     // boring getters
     public int getDay(){
         return day;
