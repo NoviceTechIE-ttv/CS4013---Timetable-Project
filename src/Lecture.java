@@ -15,6 +15,6 @@ public class Lecture {
     // boring getters
 
     public ArrayList<Session> getSessions(){
-        return sessions
+        return sessions;
     }
 }
