@@ -864,12 +864,31 @@ public class Timetable {
         return masterTimetable;
     }
 
-    // takes in a timetable and turns it into a string
-    public static String toString(Session[][][] sessions){
-
+    //writing a new CSV as the final timetable
+    public void writeMasterTimetableCSV(String filename, Session[][][] master){
+        try (FileWriter fw = new FileWriter(filename)) {
+            fw.write("day,startHour,endHour,moduleCode,type,room,lecturer\n");
+            for (int day = 0; day < 5; day++) {
+                for (int hour = 0; hour < 9; hour++) {
+                    for (int k = 0; k < master[day][hour].length; k++) {
+                        Session s = master[day][hour][k];
+                        if (s == null) continue;
+                        fw.write(day + "," +
+                                s.getStartTime() + "," +
+                                s.getEndTime() + "," +
+                                s.getModuleCode() + "," +
+                                s.getType() + "," +
+                                s.getRoom().getRoomID() + "," +
+                                s.getLecturer().getLecturerID() + "\n");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing master timetable CSV: " + filename);
+            e.printStackTrace();
+        }
     }
 }
-
 
 
 
