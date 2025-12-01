@@ -1180,6 +1180,7 @@ public class Timetable {
         }
     }
 
+    // admin version of the scanner to allow for changing and editiing of sessions instead of just being able to view like lecturer and student 
     private void adminEditSession(Scanner scanner) {
         System.out.print("Enter Module Code: ");
         String moduleCode = scanner.nextLine().trim();
@@ -1290,6 +1291,8 @@ public class Timetable {
     }
 
 
+    // formats and prints the timetable in the session fomrat of time, module code, type, group, room, and lecturer
+ *
     private void printTimetable(Session[][][] table) {
         if (table == null) {
             System.out.println("No timetable available.");
