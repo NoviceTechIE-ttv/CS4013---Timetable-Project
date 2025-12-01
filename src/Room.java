@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Room {
     // first what we read in initially
@@ -28,6 +29,34 @@ public class Room {
     // make a list of all starting times where the next [duration] hours are available
     // then pick one at random
     public int[] getAvailableTime(int duration){
+        ArrayList<int[]> validTimes = new ArrayList<>();
+
+        for (int day = 0; day < 5; day++) {
+
+            for (int start = 0; start <= 10 - duration; start++) {
+
+                boolean free = true;
+
+                for (int h = 0; h < duration; h++) {
+                    if (timeSlots[day][start + h]) {
+                        free = false;
+                        break;
+                    }
+                }
+
+                if (free) {
+                    validTimes.add(new int[]{day, start, start + duration});
+                }
+            }
+        }
+
+        if (validTimes.isEmpty()) {
+            return null;
+        }
+
+        Random rand = new Random();
+        return validTimes.get(rand.nextInt(validTimes.size()));
+
 
     }
 
@@ -50,7 +79,7 @@ public class Room {
     }
 
     public Session[] getSessions(){
-            return  (Session[]) sessions.toArray();
+        return sessions.toArray(new Session[0]);
     }
 
     // and just in case we need to reset
@@ -60,7 +89,7 @@ public class Room {
         this.type = "";
         this.capacity = 0;
         this.sessions = new ArrayList<>();
-        this.timeSlots = new boolean[capacity][capacity];
+        this.timeSlots = new boolean[5][10];
 
     }
 
