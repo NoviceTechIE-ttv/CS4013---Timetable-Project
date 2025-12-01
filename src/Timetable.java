@@ -54,6 +54,7 @@ public class Timetable {
 
     // adds the information from sessions.csv to the relevant module
     public static void completeModule(){
+        // if there is not a room cap for a lecture/lab/tutorial, define it as -1
 
     }
 
@@ -152,13 +153,15 @@ public class Timetable {
         ArrayList<Session> sessions = new ArrayList<Session>();
         for(int j=0;j<numAttempts;j++) {
             Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-            int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[0]);
-            if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
-                // no overlaps! we've got ourselves a session!
-                success = true;
-                Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LEC",possibleRoom,module.getLecturers()[0]);
-                sessions.add(session);
-                break;
+            if((module.getRoomReqs()[0]==null || possibleRoom.getType().equals(module.getRoomReqs()[0]))&&module.getStudents.size()<=possibleRoom.getCapacity()){
+                int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[0]);
+                if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
+                    // no overlaps! we've got ourselves a session!
+                    success = true;
+                    Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LEC",possibleRoom,module.getLecturers()[0]);
+                    sessions.add(session);
+                    break;
+                }
             }
         }
         if(!success){
@@ -167,13 +170,15 @@ public class Timetable {
                 for(int j=0;j<numAttempts;j++) {
                     success = false;
                     Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-                    int[] possibleTime = possibleRoom.getAvailableTime(1);
-                    if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
-                        // no overlaps! we've got ourselves a session!
-                        success = true;
-                        Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LEC",possibleRoom,module.getLecturers()[0]);
-                        sessions.add(session);
-                        break;
+                    if((module.getRoomReqs()[0]==null || possibleRoom.getType().equals(module.getRoomReqs()[0]))&&module.getStudents.size()<=possibleRoom.getCapacity()){
+                        int[] possibleTime = possibleRoom.getAvailableTime(1);
+                        if(!checkOverlap(module.getStudents(), module.getLecturers()[0], possibleTime)){
+                            // no overlaps! we've got ourselves a session!
+                            success = true;
+                            Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LEC",possibleRoom,module.getLecturers()[0]);
+                            sessions.add(session);
+                            break;
+                        }
                     }
                 }
                 if(!success){
@@ -205,7 +210,7 @@ public class Timetable {
         // first we figure out how many lecture/lab/tutorial groups there are
         int numGroups;
         int groupSize;
-        if(module.getStudentCaps()[1] == null) {
+        if(module.getStudentCaps()[1] == -1) {
             numGroups = 1;
             groupSize = module.getStudents().size();
         }
@@ -228,13 +233,16 @@ public class Timetable {
             ArrayList<Session> groupSessions = new ArrayList<Session>();
             for(int j=0;j<numAttempts;j++) {
                 Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-                int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[1]);
-                if(!checkOverlap(groupStudents, module.getLecturers()[1], possibleTime)){
-                    // no overlaps! we've got ourselves a session!
-                    success = true;
-                    Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LAB",i,possibleRoom,module.getLecturers()[1]);
-                    groupSessions.add(session);
-                    break;
+                
+                if((module.getRoomReqs()[1]==null || possibleRoom.getType().equals(module.getRoomReqs()[1]))&&groupStudents.size()<=possibleRoom.getCapacity()){
+                    int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[1]);
+                    if(!checkOverlap(groupStudents, module.getLecturers()[1], possibleTime)){
+                        // no overlaps! we've got ourselves a session!
+                        success = true;
+                        Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LAB",i,possibleRoom,module.getLecturers()[1]);
+                        groupSessions.add(session);
+                        break;
+                    }
                 }
             }
             if(!success){
@@ -243,13 +251,15 @@ public class Timetable {
                     for(int j=0;j<numAttempts;j++) {
                         success = false;
                         Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-                        int[] possibleTime = possibleRoom.getAvailableTime(1);
-                        if(!checkOverlap(groupStudents, module.getLecturers()[1], possibleTime)){
-                            // no overlaps! we've got ourselves a session!
-                            success = true;
-                            Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LAB",i,possibleRoom,module.getLecturers()[1]);
-                            groupSessions.add(session);
-                            break;
+                        if((module.getRoomReqs()[1]==null || possibleRoom.getType().equals(module.getRoomReqs()[1]))&&groupStudents.size()<=possibleRoom.getCapacity()){
+                            int[] possibleTime = possibleRoom.getAvailableTime(1);
+                            if(!checkOverlap(groupStudents, module.getLecturers()[1], possibleTime)){
+                                // no overlaps! we've got ourselves a session!
+                                success = true;
+                                Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"LAB",i,possibleRoom,module.getLecturers()[1]);
+                                groupSessions.add(session);
+                                break;
+                            }
                         }
                     }
                     if(!success){
@@ -277,7 +287,7 @@ public class Timetable {
         // first we figure out how many lecture/lab/tutorial groups there are
         int numGroups;
         int groupSize;
-        if(module.getStudentCaps()[2] == null) {
+        if(module.getStudentCaps()[2] == -1) {
             numGroups = 1;
             groupSize = module.getStudents().size();
         }
@@ -300,13 +310,15 @@ public class Timetable {
             ArrayList<Session> groupSessions = new ArrayList<Session>();
             for(int j=0;j<numAttempts;j++) {
                 Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-                int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[2]);
-                if(!checkOverlap(groupStudents, module.getLecturers()[2], possibleTime)){
-                    // no overlaps! we've got ourselves a session!
-                    success = true;
-                    Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"TUT",i,possibleRoom,module.getLecturers()[2]);
-                    groupSessions.add(session);
-                    break;
+                if((module.getRoomReqs()[2]==null || possibleRoom.getType().equals(module.getRoomReqs()[2]))&&groupStudents.size()<=possibleRoom.getCapacity()){
+                    int[] possibleTime = possibleRoom.getAvailableTime(module.getHoursPerWeek()[2]);
+                    if(!checkOverlap(groupStudents, module.getLecturers()[2], possibleTime)){
+                        // no overlaps! we've got ourselves a session!
+                        success = true;
+                        Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"TUT",i,possibleRoom,module.getLecturers()[2]);
+                        groupSessions.add(session);
+                        break;
+                    }
                 }
             }
             if(!success){
@@ -315,13 +327,15 @@ public class Timetable {
                     for(int j=0;j<numAttempts;j++) {
                         success = false;
                         Room possibleRoom = facilities.get((int) (facilities.size()*Math.random()));
-                        int[] possibleTime = possibleRoom.getAvailableTime(1);
-                        if(!checkOverlap(groupStudents, module.getLecturers()[2], possibleTime)){
-                            // no overlaps! we've got ourselves a session!
-                            success = true;
-                            Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"TUT",i,possibleRoom,module.getLecturers()[2]);
-                            groupSessions.add(session);
-                            break;
+                        if((module.getRoomReqs()[2]==null || possibleRoom.getType().equals(module.getRoomReqs()[2]))&&groupStudents.size()<=possibleRoom.getCapacity()){
+                            int[] possibleTime = possibleRoom.getAvailableTime(1);
+                            if(!checkOverlap(groupStudents, module.getLecturers()[2], possibleTime)){
+                                // no overlaps! we've got ourselves a session!
+                                success = true;
+                                Session session = new Session(possibleTime[0],possibleTime[1],possibleTime[2],module.getModuleID(),"TUT",i,possibleRoom,module.getLecturers()[2]);
+                                groupSessions.add(session);
+                                break;
+                            }
                         }
                     }
                     if(!success){
