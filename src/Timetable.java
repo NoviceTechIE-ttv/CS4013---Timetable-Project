@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.BufferedReader;
@@ -31,7 +32,7 @@ public class Timetable {
     // then getMasterTimetable
     // if getMasterTimetable returns false, resetTimetable and try again like 3 times
     // then allow for queries
-    public static void main(String args[]){
+    public void main(String args[]){
         //READ CSVS HERE
         // now that all of our data is in, we create all of our sessions
         for(int i=0;i<10;i++) {
@@ -710,7 +711,7 @@ public class Timetable {
     // but there could be exactly that many if everything filled up
 
     // generates a timetable for a student
-    public static Session[][][] getStudentTimetable(String studentID){
+    public Session[][][] getStudentTimetable(String studentID){
         Session[][][] studentTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getStudentByID(studentID).getSessions()) {
@@ -724,7 +725,7 @@ public class Timetable {
         return studentTimetable;
     }
 
-    public static Session[][][] getRoomTimetable(String roomID){
+    public Session[][][] getRoomTimetable(String roomID){
         Session[][][] roomTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getRoomByID(roomID).getSessions()) {
@@ -739,7 +740,7 @@ public class Timetable {
     }
 
     // generates a timetable for a lecturer
-    public static Session[][][] getLecturerTimetable(String lecturerID){
+    public Session[][][] getLecturerTimetable(String lecturerID){
         Session[][][] lecturerTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getLecturerByID(lecturerID).getSessions()){
@@ -753,7 +754,7 @@ public class Timetable {
     }
 
     // generates a timetable for a module
-    public static Session[][][] getModuleTimetable(String moduleID){
+    public Session[][][] getModuleTimetable(String moduleID){
         Session[][][] moduleTimetable = new Session[5][9][facilities.size()];
         int[][] nextFreeIndex = new int[5][9];
         Module m = getModuleByID(moduleID);
@@ -788,7 +789,7 @@ public class Timetable {
     }
 
     // generates the timetable for a given year and semester of a programme
-    public static Session[][][] getGroupTimetable(String programmeID, int year, int semester){
+    public Session[][][] getGroupTimetable(String programmeID, int year, int semester){
         Session[][][] groupTimetable = new Session[5][9][facilities.size()];
         // by default filled with 0s
         int[][] nextFreeIndex = new int[5][9];

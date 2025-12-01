@@ -1,0 +1,317 @@
+moduleCode,classType,maxCapacity,roomType,lecturerName
+CS4012,lecture,,teaching,Michael English
+CS4012,lab,30,CSlab,Michael English
+CS4012,tutorial,40,teaching,Michael English
+
+CS4141,lecture,,teaching,Alan T Ryan
+CS4141,lab,30,CSlab,Alan T Ryan
+
+CS4221,lecture,,teaching,Conor Ryan
+CS4221,lab,30,CSlab,Conor Ryan
+
+ET4011,lecture,,teaching,Gabriel Leen
+ET4011,lab,30,CSlab,Gabriel Leen
+ET4011,lab,30,CSlab,Jacqueline Walker
+ET4011,tutorial,40,teaching,Gabriel Leen
+
+MS4111,lecture,,teaching,Romina Gaburro
+MS4111,tutorial,40,teaching,Romina Gaburro
+
+CS4043,lecture,,teaching,Niamh O'Sullivan
+CS4043,lab,30,CSlab,Niamh O'Sullivan
+
+CS4222,lecture,,teaching,John Murphy
+CS4222,lab,30,CSlab,John Murphy
+
+CS4182,lecture,,teaching,Sarah Keane
+CS4182,tutorial,40,teaching,Sarah Keane
+
+ET4162,lecture,,teaching,David Byrne
+ET4162,tutorial,40,teaching,David Byrne
+ET4162,lab,30,CSlab,David Byrne
+
+MA4402,lecture,,teaching,Fiona Walsh
+MA4402,tutorial,40,teaching,Fiona Walsh
+
+CE4703,lecture,,teaching,Liam Kavanagh
+CE4703,lab,30,CSlab,Liam Kavanagh
+
+CE4607,lecture,,teaching,Emma Brennan
+CE4607,tutorial,40,teaching,Emma Brennan
+
+ET4023,lecture,,teaching,Patrick Foley
+ET4023,lab,30,CSlab,Patrick Foley
+
+ED5081,lecture,,teaching,Claire Brennan
+ED5081,lab,30,CSlab,Claire Brennan
+
+ET4033,lecture,,teaching,Sean O'Brien
+ET4033,lab,30,CSlab,Sean O'Brien
+
+CS4023,lecture,,teaching,Aoife McCarthy
+CS4023,tutorial,40,teaching,Aoife McCarthy
+
+ET4024,lecture,,teaching,Liam Kavanagh
+ET4024,lab,30,CSlab,Liam Kavanagh
+
+ET4014,lecture,,teaching,Niamh O'Sullivan
+ET4014,lab,30,CSlab,Niamh O'Sullivan
+
+ET4334,lecture,,teaching,John Murphy
+ET4334,lab,30,CSlab,John Murphy
+
+ED5042,lecture,,teaching,Sarah Keane
+ED5042,lab,30,CSlab,Sarah Keane
+
+ET4047,lecture,,teaching,David Byrne
+ET4047,tutorial,40,teaching,David Byrne
+ET4047,lab,30,CSlab,David Byrne
+
+EE6003,lecture,,teaching,Fiona Walsh
+EE6003,lab,30,CSlab,Fiona Walsh
+
+CE5041,lecture,,teaching,Patrick Foley
+CE5041,lab,30,CSlab,Patrick Foley
+
+ET4244,lecture,,teaching,Claire Brennan
+ET4244,lab,30,CSlab,Claire Brennan
+
+ET4437,lecture,,teaching,Sean O'Brien
+ET4437,lab,30,CSlab,Sean O'Brien
+
+COOP,lecture,,teaching,Cooperative Education Coordinator
+
+CE4051,lecture,,teaching,Liam Kavanagh
+CE4051,lab,30,CSlab,Liam Kavanagh
+
+CE5031,lecture,,teaching,Emma Brennan
+CE5031,lab,30,CSlab,Emma Brennan
+
+CE4706,lecture,,teaching,John Murphy
+CE4706,lab,30,CSlab,John Murphy
+
+ET4307,lecture,,teaching,Niamh O'Sullivan
+ET4307,lab,30,CSlab,Niamh O'Sullivan
+
+ET4927,lecture,,teaching,David Byrne
+
+EE6022,lecture,,teaching,Fiona Walsh
+EE6022,lab,30,CSlab,Fiona Walsh
+
+CE5032,lecture,,teaching,Patrick Foley
+CE5032,lab,30,CSlab,Patrick Foley
+
+CE5022,lecture,,teaching,Claire Brennan
+CE5022,lab,30,CSlab,Claire Brennan
+
+ET4028,lecture,,teaching,Sean O'Brien
+ET4028,lab,30,CSlab,Sean O'Brien
+
+ET4928,lecture,,teaching,Liam Kavanagh
+
+CS4231,lecture,,teaching,Aoife McCarthy
+CS4231,lab,30,CSlab,Aoife McCarthy
+
+CS4031,lecture,,teaching,Niamh O'Sullivan
+CS4031,lab,30,CSlab,Niamh O'Sullivan
+
+CS4061,lecture,,teaching,John Murphy
+CS4061,lab,30,CSlab,John Murphy
+
+CS4025,lecture,,teaching,Sarah Keane
+CS4025,lab,30,CSlab,Sarah Keane
+
+MA4701,lecture,,teaching,Fiona Walsh
+MA4701,tutorial,40,teaching,Fiona Walsh
+
+CS4005,lecture,,teaching,Liam Kavanagh
+CS4005,lab,30,CSlab,Liam Kavanagh
+
+CS4082,lecture,,teaching,Emma Brennan
+CS4082,lab,30,CSlab,Emma Brennan
+
+CS4072,lecture,,teaching,Patrick Foley
+CS4072,lab,30,CSlab,Patrick Foley
+
+CS4232,lecture,,teaching,Claire Brennan
+CS4232,lab,30,CSlab,Claire Brennan
+
+CS4066,lecture,,teaching,Sean O'Brien
+CS4066,lab,30,CSlab,Sean O'Brien
+
+CS4019,lecture,,teaching,Niamh O'Sullivan
+
+CS4083,lecture,,teaching,David Byrne
+CS4083,lab,30,CSlab,David Byrne
+
+CS4053,lecture,,teaching,Fiona Walsh
+CS4053,lab,30,CSlab,Fiona Walsh
+
+CS4151,lecture,,teaching,Liam Kavanagh
+CS4151,tutorial,40,teaching,Liam Kavanagh
+
+SO4033,lecture,,teaching,John Murphy
+SO4033,tutorial,40,teaching,John Murphy
+
+CS4029,lecture,,teaching,Sarah Keane
+CS4029,lab,30,CSlab,Sarah Keane
+
+CS4174,lecture,,teaching,Emma Brennan
+CS4174,lab,30,CSlab,Emma Brennan
+
+CS4056,lecture,,teaching,Patrick Foley
+CS4056,lab,30,CSlab,Patrick Foley
+
+CS4009,lecture,,teaching,Claire Brennan
+CS4009,lab,30,CSlab,Claire Brennan
+
+CS4826,lecture,,teaching,Sean O'Brien
+CS4826,tutorial,40,teaching,Sean O'Brien
+
+C04310,lecture,,teaching,Cooperative Education Coordinator
+
+CS4030,lecture,,teaching,Niamh O'Sullivan
+CS4030,lab,30,CSlab,Niamh O'Sullivan
+
+CS4040,lecture,,teaching,David Byrne
+CS4040,lab,30,CSlab,David Byrne
+
+CS4242,lecture,,teaching,Fiona Walsh
+CS4242,lab,30,CSlab,Fiona Walsh
+
+CS4126,lecture,,teaching,Liam Kavanagh
+CS4126,tutorial,40,teaching,Liam Kavanagh
+
+CS4457,lecture,,teaching,Emma Brennan
+CS4457,lab,30,CSlab,Emma Brennan
+
+CS4237,lecture,,teaching,Patrick Foley
+
+CS4059,lecture,,teaching,Claire Brennan
+CS4059,lab,30,CSlab,Claire Brennan
+
+CS4071,lecture,,teaching,Sean O'Brien
+CS4071,tutorial,40,teaching,Sean O'Brien
+
+CS4107,lecture,,teaching,Niamh O'Sullivan
+CS4107,lab,30,CSlab,Niamh O'Sullivan
+
+CS4268,lecture,,teaching,John Murphy
+
+CS4049,lecture,,teaching,Sarah Keane
+CS4049,lab,30,CSlab,Sarah Keane
+
+CS4047,lecture,,teaching,Emma Brennan
+CS4047,tutorial,40,teaching,Emma Brennan
+
+CE4041,lecture,,teaching,Liam Kavanagh
+CE4041,lab,30,CSlab,Liam Kavanagh
+
+CS6021,lecture,,teaching,Patrick Foley
+CS6021,tutorial,40,teaching,Patrick Foley
+
+CS6461,lecture,,teaching,Claire Brennan
+CS6461,lab,30,CSlab,Claire Brennan
+
+IN6031,lecture,,teaching,Sean O'Brien
+
+CE6026,lecture,,teaching,Niamh O'Sullivan
+CE6026,tutorial,40,teaching,Niamh O'Sullivan
+
+CS5024,lecture,,teaching,David Byrne
+CS5024,tutorial,40,teaching,David Byrne
+
+EE6008,lecture,,teaching,Fiona Walsh
+EE6008,lab,30,CSlab,Fiona Walsh
+
+CE5002,lecture,,teaching,John Murphy
+CE5002,lab,30,CSlab,John Murphy
+
+CE5021,lecture,,teaching,Emma Brennan
+CE5021,lab,30,CSlab,Emma Brennan
+
+# ==== Added for LM121-CS (Computer Systems) ====
+CS4013,lecture,,teaching,Brian Kelly
+CS4013,tutorial,40,teaching,Brian Kelly
+CS4013,lab,30,CSlab,Brian Kelly
+
+CS4004,lecture,,teaching,Laura Collins
+CS4004,tutorial,40,teaching,Laura Collins
+CS4004,lab,30,CSlab,Laura Collins
+
+CS4178,lecture,,teaching,Mark Hughes
+CS4178,tutorial,40,teaching,Mark Hughes
+
+CS4416,lecture,,teaching,Eoin Daly
+CS4416,tutorial,40,teaching,Eoin Daly
+CS4416,lab,30,CSlab,Eoin Daly
+
+CS4006,lecture,,teaching,Rachel Byrne
+
+CS4076,lecture,,teaching,Siobhan Murphy
+CS4076,lab,30,CSlab,Siobhan Murphy
+
+CS4115,lecture,,teaching,Kevin Nolan
+CS4115,tutorial,40,teaching,Kevin Nolan
+CS4115,lab,30,CSlab,Kevin Nolan
+
+CS4815,lecture,,teaching,Aisling O'Connor
+CS4815,lab,30,CSlab,Aisling O'Connor
+
+MA4413,lecture,,teaching,Tom Fitzgerald
+MA4413,tutorial,40,teaching,Tom Fitzgerald
+
+# ==== LM121-GAM specific Year 2 module ====
+CS4093,lecture,,teaching,Emma Doyle
+CS4093,lab,30,CSlab,Emma Doyle
+
+# CS4230 and CS4310 are Co-op modules: no sessions added (0 contact hours)
+
+# ==== LM121-CS / LM121-GAM – Shared Year 3/4 modules ====
+CS4187,lecture,,teaching,Mark Hughes
+CS4187,tutorial,40,teaching,Mark Hughes
+
+CS4084,lecture,,teaching,Rachel Byrne
+CS4084,lab,30,CSlab,Rachel Byrne
+
+CS4106,lecture,,teaching,Brian Kelly
+CS4106,tutorial,40,teaching,Brian Kelly
+
+CS4096,lecture,,teaching,Kevin Nolan
+CS4096,lab,30,CSlab,Kevin Nolan
+
+CS4617,lecture,,teaching,Project Supervisor Pool
+CS4618,lecture,,teaching,Project Supervisor Pool
+
+CS4125,lecture,,teaching,Laura Collins
+CS4125,tutorial,40,teaching,Laura Collins
+
+CS4207,lecture,,teaching,Eoin Daly
+CS4207,lab,30,CSlab,Eoin Daly
+
+CS4337,lecture,,teaching,Siobhan Murphy
+CS4337,tutorial,40,teaching,Siobhan Murphy
+CS4337,lab,30,CSlab,Siobhan Murphy
+
+CS4287,lecture,,teaching,Aisling O'Connor
+CS4287,tutorial,40,teaching,Aisling O'Connor
+
+CS4227,lecture,,teaching,Emma Doyle
+CS4227,tutorial,40,teaching,Emma Doyle
+
+CS4158,lecture,,teaching,Tom Fitzgerald
+CS4158,tutorial,40,teaching,Tom Fitzgerald
+
+CS4168,lecture,,teaching,Rachel Byrne
+CS4168,tutorial,40,teaching,Rachel Byrne
+CS4168,lab,30,CSlab,Rachel Byrne
+
+CS4085,lecture,,teaching,Kevin Nolan
+CS4085,lab,30,CSlab,Kevin Nolan
+
+CS4197,lecture,,teaching,Project Supervisor Pool
+CS4198,lecture,,teaching,Project Supervisor Pool
+
+CS4067,lecture,,teaching,Aisling O'Connor
+CS4067,tutorial,40,teaching,Aisling O'Connor
+
