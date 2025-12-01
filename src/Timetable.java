@@ -15,25 +15,22 @@ public class Timetable {
     private static ArrayList<Student> studentBody;
 
     // helper: moduleCode -> {lectureHours, tutorialHours, labHours}
-    private Map<String, int[]> moduleHoursMap = new HashMap<>();
-
-    // constructor – initialise all your lists/maps
-    public Timetable() {
-        facilities     = new ArrayList<>();
-        programmes     = new ArrayList<>();
-        bookOfModules  = new ArrayList<>();
-        lecturerBody   = new ArrayList<>();
-        studentBody    = new ArrayList<>();
-        moduleHoursMap = new HashMap<>();
-    }
+    private static Map<String, int[]> moduleHoursMap = new HashMap<>();
     
     // first readCSVs
     // then addSessions
     // then getMasterTimetable
     // if getMasterTimetable returns false, resetTimetable and try again like 3 times
     // then allow for queries
-    public void main(String args[]){
+    public static void main(String args[]){
+        facilities     = new ArrayList<>();
+        programmes     = new ArrayList<>();
+        bookOfModules  = new ArrayList<>();
+        lecturerBody   = new ArrayList<>();
+        studentBody    = new ArrayList<>();
+        moduleHoursMap = new HashMap<>();
         //READ CSVS HERE
+        readCSVs();
         // now that all of our data is in, we create all of our sessions
         for(int i=0;i<10;i++) {
             if (addSessions()) {
@@ -45,6 +42,7 @@ public class Timetable {
         // then we generate the master timetable
         Session[][][] masterTimetable = getMasterTimetable();
         // and read it out to a csv
+        writeMasterTimetableCSV("src/csv/timetable.csv", masterTimetable);
         // then allow for querying
     }
 
@@ -53,7 +51,7 @@ public class Timetable {
     // reads in all csvs and passes data to the functions immediately below
     // so everything ends up in the right place
     // order to read in: rooms.csv, programmes.csv, modules.csv, sessions.csv, students.csv
-    public void readCSVs(){
+    public static void readCSVs(){
 
         // (re)initialise all lists and maps in case this is called more than once
         facilities     = new ArrayList<>();
@@ -64,28 +62,28 @@ public class Timetable {
         moduleHoursMap = new HashMap<>();
 
         // base folder for CSVs
-        String basePath = "src/csv/";
+        String basePath = "./src/csv/";
 
         // 1. read rooms
-        readRoomsCSV("rooms.csv");
+        readRoomsCSV(basePath+"rooms.csv");
 
         // 2. read programmes and programme->modules mapping
-        readProgrammesCSV("programmes.csv", "programme_module.csv");
+        readProgrammesCSV(basePath+"programmes.csv", basePath+"programme_modules.csv");
 
         // 3. read module hours and then module list
-        readModuleHoursCSV("module_hours.csv");
-        readModulesCSV("modules.csv");
+        readModuleHoursCSV(basePath+"module_hours.csv");
+        readModulesCSV(basePath+"modules.csv");
 
         // 4. complete modules with lecturer / caps / room types
-        readSessionsCSV("sessions.csv");
+        readSessionsCSV(basePath+"sessions.csv");
 
         // 5. read students and attach them to modules
-        readStudentsCSV("students.csv");
+        readStudentsCSV(basePath+"students.csv");
     }
 
     // === PRIVATE HELPERS FOR CSV READING ===
 
-    private void readRoomsCSV(String filename) {
+    private static void readRoomsCSV(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line = br.readLine(); // skip header: Room,Type,Capacity
 
@@ -113,7 +111,7 @@ public class Timetable {
         }
     }
 
-    private void readProgrammesCSV(String programmesFile, String programmeModulesFile) {
+    private static void readProgrammesCSV(String programmesFile, String programmeModulesFile) {
         ArrayList<String> programmeCodes = new ArrayList<>();
 
         // 1) read programme codes from programmes.csv
@@ -191,7 +189,7 @@ public class Timetable {
         }
     }
 
-    private void readModuleHoursCSV(String filename) {
+    private static void readModuleHoursCSV(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line = br.readLine(); // header
             while ((line = br.readLine()) != null) {
@@ -218,7 +216,7 @@ public class Timetable {
         }
     }
 
-    private void readModulesCSV(String filename) {
+    private static void readModulesCSV(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line = br.readLine(); // header: moduleCode,moduleName
             while ((line = br.readLine()) != null) {
@@ -240,7 +238,7 @@ public class Timetable {
         }
     }
 
-    private void readSessionsCSV(String filename) {
+    private static void readSessionsCSV(String filename) {
         // temporary maps to collect per-module data
         Map<String, Lecturer[]> lectMap = new HashMap<>();
         Map<String, int[]> capsMap      = new HashMap<>();
@@ -309,7 +307,7 @@ public class Timetable {
         }
     }
 
-    private void readStudentsCSV(String filename) {
+    private static void readStudentsCSV(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line = br.readLine(); // header
             while ((line = br.readLine()) != null) {
@@ -331,30 +329,9 @@ public class Timetable {
             e.printStackTrace();
         }
     }
-    
-
-    public static void addRoom(){
-
-    }
-
-    public static void addProgramme(){
-
-    }
-
-    // creates a module using the information from modules.csv
-    // and adds it to bookOfModules
-    public static void addModule(){
-
-    }
-
-    // adds the information from sessions.csv to the relevant module
-    public static void completeModule(){
-        // if there is not a room cap for a lecture/lab/tutorial, define it as -1
-
-    }
 
     // helper method for completeModule which
-    private Lecturer getOrCreateLecturer(String lecturerID){
+    private static Lecturer getOrCreateLecturer(String lecturerID){
         Lecturer l = getLecturerByID(lecturerID);
         if (l == null) {
             l = new Lecturer(lecturerID);
@@ -365,7 +342,7 @@ public class Timetable {
 
     // adds a student to studentBody using information from students.csv
     // also adds that student to all of their modules
-    public void addStudent(String studentID, String programmeID, int year, int semester){
+    public static void addStudent(String studentID, String programmeID, int year, int semester){
         Student s = new Student(studentID, programmeID, year, semester);
         studentBody.add(s);
 
@@ -385,7 +362,7 @@ public class Timetable {
 
     // METHODS FOR SEARCHING BY IDS
 
-    public Module getModuleByID(String moduleID){
+    public static Module getModuleByID(String moduleID){
         for(Module m: bookOfModules){
             if(m.getModuleID().equals(moduleID)){
                 return m;
@@ -394,7 +371,7 @@ public class Timetable {
         return null;
     }
 
-    public Programme getProgrammeByID(String programmeID){
+    public static Programme getProgrammeByID(String programmeID){
         for(Programme p: programmes){
             if(p.getProgrammeID().equals(programmeID)){
                 return p;
@@ -403,7 +380,7 @@ public class Timetable {
         return null;
     }
 
-    public Student getStudentByID(String studentID){
+    public static Student getStudentByID(String studentID){
         for(Student s: studentBody){
             if(s.getStudentID().equals(studentID)){
                 return s;
@@ -412,7 +389,7 @@ public class Timetable {
         return null;
     }
 
-    public Lecturer getLecturerByID(String lecturerID){
+    public static Lecturer getLecturerByID(String lecturerID){
         for(Lecturer l: lecturerBody){
             if(l.getLecturerID().equals(lecturerID)){
                 return l;
@@ -421,7 +398,7 @@ public class Timetable {
         return null;
     }
 
-    public Room getRoomByID(String roomID){
+    public static Room getRoomByID(String roomID){
         for(Room r: facilities){
             if(r.getRoomID().equals(roomID)){
                 return r;
@@ -439,7 +416,7 @@ public class Timetable {
     // goes through every Module and creates their Lectures, Labs, and Tutorials
     // if any return false, return false
     // return true after finished adding Lectures, Labs, and Tutorials for all Modules
-    public boolean addSessions(){
+    public static boolean addSessions(){
         for(Module m: bookOfModules){
             if(!addLectures(m) || !addLabs(m) || !addTutorials(m))
             {
@@ -539,10 +516,10 @@ public class Timetable {
             // now we grab whatever student group it is
             ArrayList<Student> groupStudents;
             if((i+1)*groupSize <= module.getStudents().size()) {
-                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, (i + 1) * groupSize);
+                groupStudents = new ArrayList<Student>(module.getStudents().subList(i * groupSize, (i + 1) * groupSize));
             }
             else{
-                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, module.getStudents().size());
+                groupStudents = new ArrayList<Student>(module.getStudents().subList(i * groupSize, module.getStudents().size()));
             }
             ArrayList<Session> groupSessions = new ArrayList<Session>();
             for(int j=0;j<numAttempts;j++) {
@@ -616,10 +593,10 @@ public class Timetable {
             // now we grab whatever student group it is
             ArrayList<Student> groupStudents;
             if((i+1)*groupSize <= module.getStudents().size()) {
-                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, (i + 1) * groupSize);
+                groupStudents = new ArrayList<Student>(module.getStudents().subList(i * groupSize, (i + 1) * groupSize));
             }
             else{
-                groupStudents = (ArrayList<Student>) module.getStudents().subList(i * groupSize, module.getStudents().size());
+                groupStudents = new ArrayList<Student>(module.getStudents().subList(i * groupSize, module.getStudents().size()));
             }
             ArrayList<Session> groupSessions = new ArrayList<Session>();
             for(int j=0;j<numAttempts;j++) {
@@ -711,7 +688,7 @@ public class Timetable {
     // but there could be exactly that many if everything filled up
 
     // generates a timetable for a student
-    public Session[][][] getStudentTimetable(String studentID){
+    public static Session[][][] getStudentTimetable(String studentID){
         Session[][][] studentTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getStudentByID(studentID).getSessions()) {
@@ -725,7 +702,7 @@ public class Timetable {
         return studentTimetable;
     }
 
-    public Session[][][] getRoomTimetable(String roomID){
+    public static Session[][][] getRoomTimetable(String roomID){
         Session[][][] roomTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getRoomByID(roomID).getSessions()) {
@@ -740,7 +717,7 @@ public class Timetable {
     }
 
     // generates a timetable for a lecturer
-    public Session[][][] getLecturerTimetable(String lecturerID){
+    public static Session[][][] getLecturerTimetable(String lecturerID){
         Session[][][] lecturerTimetable = new Session[5][9][1];
         int[][] nextFreeIndex = new int[5][9];
         for(Session s: getLecturerByID(lecturerID).getSessions()){
@@ -754,7 +731,7 @@ public class Timetable {
     }
 
     // generates a timetable for a module
-    public Session[][][] getModuleTimetable(String moduleID){
+    public static Session[][][] getModuleTimetable(String moduleID){
         Session[][][] moduleTimetable = new Session[5][9][facilities.size()];
         int[][] nextFreeIndex = new int[5][9];
         Module m = getModuleByID(moduleID);
@@ -789,7 +766,7 @@ public class Timetable {
     }
 
     // generates the timetable for a given year and semester of a programme
-    public Session[][][] getGroupTimetable(String programmeID, int year, int semester){
+    public static Session[][][] getGroupTimetable(String programmeID, int year, int semester){
         Session[][][] groupTimetable = new Session[5][9][facilities.size()];
         // by default filled with 0s
         int[][] nextFreeIndex = new int[5][9];
@@ -866,7 +843,7 @@ public class Timetable {
     }
 
     //writing a new CSV as the final timetable
-    public void writeMasterTimetableCSV(String filename, Session[][][] master){
+    public static void writeMasterTimetableCSV(String filename, Session[][][] master){
         try (FileWriter fw = new FileWriter(filename)) {
             fw.write("day,startHour,endHour,moduleCode,type,room,lecturer\n");
             for (int day = 0; day < 5; day++) {
