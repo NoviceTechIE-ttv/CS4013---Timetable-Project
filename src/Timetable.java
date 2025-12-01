@@ -63,7 +63,7 @@ public void readCSVs(){
         moduleHoursMap = new HashMap<>();
 
         // base folder for CSVs
-        String basePath = "src/csv/";
+        String basePath = "src/";
 
         // 1. read rooms
         readRoomsCSV("rooms.csv");
