@@ -32,6 +32,7 @@ public class Lecturer {
         this.sessions.clear();
     }
 
+    @Override
     public String toString(){
         return "Lecturer ID :" + lecturerID;
     }

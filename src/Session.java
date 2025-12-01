@@ -74,4 +74,9 @@ public class Session {
     public Lecturer getLecturer(){
         return lecturer;
     }
+
+    @Override
+    public String toString(){
+        return moduleCode + "\n" + type + "\n" + group + "\n" + startTime + " - " + endTime;
+    }
 }
